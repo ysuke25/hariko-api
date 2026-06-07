@@ -42,7 +42,7 @@ func (s *Server) Run() error {
 
 	server := &http.Server{
 		Addr:    addr,
-		Handler: s.mux,
+		Handler: loggingMiddleware(s.logger, s.mux),
 	}
 
 	s.logger.Info("starting hariko", "addr", addr, "routes", len(s.cfg.Routes))
