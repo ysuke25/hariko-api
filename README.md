@@ -1,5 +1,9 @@
 # hariko
 
+[![Go Version](https://img.shields.io/github/go-mod/go-version/ysuke25/hariko-api)](https://go.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ysuke25/hariko)](https://goreportcard.com/report/github.com/ysuke25/hariko)
+
 A lightweight API mock server written in Go. Define your API routes in YAML, get instant mock responses.
 
 The name "hariko" comes from the Japanese word "張り子" (papier-mache) — it looks real on the outside but is hollow inside, just like a mock server.
@@ -74,4 +78,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT License. See [LICENSE](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+SPDX-License-Identifier: MIT
+
+Copyright (c) 2026 Yusuke Yajima
