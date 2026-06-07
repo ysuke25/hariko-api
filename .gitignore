@@ -19,3 +19,6 @@ Thumbs.db
 # テスト
 coverage.out
 coverage.html
+
+# ドキュメント（ローカル用）
+docs/
