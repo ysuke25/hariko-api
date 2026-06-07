@@ -1,0 +1,47 @@
+server:
+  port: 8080
+  host: "0.0.0.0"
+
+routes:
+  - method: GET
+    path: /api/health
+    response:
+      status: 200
+      headers:
+        Content-Type: application/json
+      body: '{"status": "ok"}'
+
+  - method: GET
+    path: /api/users
+    response:
+      status: 200
+      headers:
+        Content-Type: application/json
+      body: |
+        [
+          {"id": 1, "name": "Alice", "email": "alice@example.com"},
+          {"id": 2, "name": "Bob", "email": "bob@example.com"}
+        ]
+
+  - method: POST
+    path: /api/users
+    response:
+      status: 201
+      headers:
+        Content-Type: application/json
+      body: |
+        {"id": 3, "name": "Charlie", "email": "charlie@example.com"}
+
+  - method: GET
+    path: /api/users/1
+    response:
+      status: 200
+      headers:
+        Content-Type: application/json
+      body: |
+        {"id": 1, "name": "Alice", "email": "alice@example.com"}
+
+  - method: DELETE
+    path: /api/users/1
+    response:
+      status: 204

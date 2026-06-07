@@ -1,0 +1,21 @@
+# バイナリ
+hariko
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 環境変数
+.env
+.env.*
+
+# テスト
+coverage.out
+coverage.html
