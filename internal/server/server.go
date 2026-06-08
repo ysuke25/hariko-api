@@ -29,11 +29,36 @@ func New(cfg *config.Config, logger *slog.Logger) *Server {
 }
 
 func (s *Server) registerRoutes() {
+	hasParamRoutes := false
+
 	for _, route := range s.cfg.Routes {
-		pattern := buildPattern(route.Method, route.Path)
-		s.mux.HandleFunc(pattern, newRouteHandler(route))
+		if containsParam(route.Path) {
+			hasParamRoutes = true
+		} else {
+			pattern := buildPattern(route.Method, route.Path)
+			s.mux.HandleFunc(pattern, newRouteHandler(route))
+		}
 		s.logger.Info("registered route", "method", route.Method, "path", route.Path)
 	}
+
+	if hasParamRoutes {
+		s.mux.HandleFunc("/", s.matcherHandler())
+	}
+}
+
+func (s *Server) matcherHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		route, found := s.matcher.Match(r.Method, r.URL.Path)
+		if !found {
+			notFoundHandler()(w, r)
+			return
+		}
+		newRouteHandler(*route)(w, r)
+	}
+}
+
+func containsParam(path string) bool {
+	return strings.Contains(path, "/:")
 }
 
 func buildPattern(method, path string) string {

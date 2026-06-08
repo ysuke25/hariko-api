@@ -149,6 +149,46 @@ func TestStaticMatcher_Match(t *testing.T) {
 			expectMatch: false,
 			expectedRoute: nil,
 		},
+		{
+			name: "path parameter match",
+			routes: []config.Route{
+				{Method: "GET", Path: "/api/users/:id", Response: config.Response{Status: 200, Body: `{"id": 1}`}},
+			},
+			method:      "GET",
+			path:        "/api/users/1",
+			expectMatch: true,
+			expectedRoute: &config.Route{Method: "GET", Path: "/api/users/:id", Response: config.Response{Status: 200, Body: `{"id": 1}`}},
+		},
+		{
+			name: "path parameter - no match on extra segments",
+			routes: []config.Route{
+				{Method: "GET", Path: "/api/users/:id", Response: config.Response{Status: 200}},
+			},
+			method:      "GET",
+			path:        "/api/users/1/posts",
+			expectMatch: false,
+		},
+		{
+			name: "exact match takes priority over param match",
+			routes: []config.Route{
+				{Method: "GET", Path: "/api/users/:id", Response: config.Response{Status: 200, Body: "param"}},
+				{Method: "GET", Path: "/api/users/me", Response: config.Response{Status: 200, Body: "exact"}},
+			},
+			method:      "GET",
+			path:        "/api/users/me",
+			expectMatch: true,
+			expectedRoute: &config.Route{Method: "GET", Path: "/api/users/me", Response: config.Response{Status: 200, Body: "exact"}},
+		},
+		{
+			name: "multiple path parameters",
+			routes: []config.Route{
+				{Method: "GET", Path: "/api/users/:userId/posts/:postId", Response: config.Response{Status: 200}},
+			},
+			method:      "GET",
+			path:        "/api/users/1/posts/42",
+			expectMatch: true,
+			expectedRoute: &config.Route{Method: "GET", Path: "/api/users/:userId/posts/:postId", Response: config.Response{Status: 200}},
+		},
 	}
 
 	for _, tt := range tests {
