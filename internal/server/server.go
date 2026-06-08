@@ -7,19 +7,22 @@ import (
 	"strings"
 
 	"github.com/ysuke25/hariko/internal/config"
+	"github.com/ysuke25/hariko/internal/matcher"
 )
 
 type Server struct {
-	cfg    *config.Config
-	mux    *http.ServeMux
-	logger *slog.Logger
+	cfg     *config.Config
+	mux     *http.ServeMux
+	matcher matcher.RouteMatcher
+	logger  *slog.Logger
 }
 
 func New(cfg *config.Config, logger *slog.Logger) *Server {
 	s := &Server{
-		cfg:    cfg,
-		mux:    http.NewServeMux(),
-		logger: logger,
+		cfg:     cfg,
+		mux:     http.NewServeMux(),
+		matcher: matcher.NewStaticMatcher(cfg.Routes),
+		logger:  logger,
 	}
 	s.registerRoutes()
 	return s
